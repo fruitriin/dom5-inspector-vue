@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "public/index.html ;vue-cli-service serve",
+    "build": "cp -f public/index.build.html public/index.html; vue-cli-service build; cp -f public/index.dev.html public/index.html; ",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "lodash": "^4.17.10",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
   },
