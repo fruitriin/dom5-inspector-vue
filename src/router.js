@@ -23,8 +23,7 @@ export default new Router({
     {
       path: "/spell",
       name: "spell",
-      component: () =>
-      import("./views/Spell.vue")
+      component: () => import("./views/Spell.vue")
     }
   ]
 });
