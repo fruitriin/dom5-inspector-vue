@@ -74,9 +74,11 @@
           <td>{{ row.Cost }}</td>
           <td>{{ row.Terrain }}</td>
           <td>{{ row.Type }}</td>
+          <td v-if="row.nations" v-html="row.nations.join('<br>')"></td>
+          <td v-else></td>
         </tr>
         <tr :key="k + '-2'">
-          <td colspan="6">{{ row.ShortDesc }}</td>
+          <td colspan="7">{{ row.ShortDesc }}</td>
         </tr>
       </template>
     </table>
@@ -112,6 +114,7 @@ export default {
   data: function() {
     return {
       rawData: {},
+      nationSpellWork: {},
       header: [
         "名称",
         "領域",
@@ -119,7 +122,8 @@ export default {
         "複系統",
         "消費",
         "使用場面",
-        "簡易分類"
+        "簡易分類",
+        "専用国家"
       ],
       elements: Object.values(elements),
       schools: schools,
@@ -135,14 +139,41 @@ export default {
       configure: {}
     };
   },
-  mounted: function() {
+  async mounted() {
     const endPoint = process.env.VUE_APP_JSON_BASE_URL + "Spell.json";
-    this.$axios.get(endPoint).then(response => {
-      this.rawData = response.data;
+    const spellResponse = await this.$axios.get(endPoint);
+    this.rawData = spellResponse.data;
+
+    const nationSpellWorkResponse = await this.$axios.get(
+      `${process.env.VUE_APP_JSON_BASE_URL}/NationalSpellWork.json`
+    );
+    this.nationSpellWork = nationSpellWorkResponse.data;
+
+    const nationSpellResponse = await this.$axios.get(
+      `${process.env.VUE_APP_JSON_BASE_URL}/NationalSpell.json`
+    );
+
+    Object.keys(nationSpellResponse.data).forEach(spell => {
+      nationSpellResponse.data[spell]["nations"] = this.nationSpellRelation[
+        nationSpellResponse.data[spell].Pname
+      ];
     });
+
+    this.rawData = Object.assign(this.rawData, nationSpellResponse.data);
   },
   computed: {
-    data: function() {
+    nationSpellRelation() {
+      const relation = {};
+      this.nationSpellWork.forEach(spell => {
+        if (relation[spell.Name] === undefined) relation[spell.Name] = [];
+        relation[spell.Name].push(`${spell.Era} - ${spell.Nation}`);
+      });
+
+      return relation;
+    },
+
+    data() {
+      if (this.rawData.length === 0) return {};
       return Object.values(this.rawData).filter(d => {
         if (this.filters.name !== "") {
           if (d.Name.indexOf(this.filters.name) === -1) {
