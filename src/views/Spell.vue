@@ -8,7 +8,7 @@
           <td><input type="text" v-model="filters.name" /></td>
         </tr>
         <tr>
-          <td>属性</td>
+          <td>系統</td>
           <td>
             <template v-for="element in elements">
               <input
@@ -22,7 +22,7 @@
           </td>
         </tr>
         <tr>
-          <td>属性レベル</td>
+          <td>系統レベル</td>
           <td>
             <input type="number" v-model="filters.elementLevelMin" /> 〜<input
               type="number"
@@ -75,7 +75,7 @@
           <td v-html="elementToImg(row.Main)"></td>
           <td v-html="elementToImg(row.Sub)"></td>
           <td>{{ row.Cost }}</td>
-          <td>{{ row.Terrain }}</td>
+          <td>{{row.Use}}/{{ row.Terrain }}</td>
           <td>{{ row.Type }}</td>
           <td v-if="row.nations" v-html="row.nations.join('<br>')"></td>
           <td v-else></td>
@@ -122,7 +122,7 @@ export default {
         "名称",
         "領域",
         "主系統",
-        "複系統",
+        "副系統",
         "消費",
         "使用場面",
         "簡易分類",
