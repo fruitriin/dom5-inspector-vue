@@ -67,6 +67,9 @@
         <tr :key="k + '-1'">
           <td rowspan="2">
             {{ row.Name }}
+            <a :href="`/?Spell/${row.School}/${row.Pname}`">
+            <img class="arrowLink" :src="`${baseUrl}/level-up-alt-solid.svg`" width="12" height="12">
+          </a>
           </td>
           <td>{{ row.School }} Lv{{ row.Lv }}</td>
           <td v-html="elementToImg(row.Main)"></td>
@@ -136,7 +139,8 @@ export default {
         elementLevelMin: 1,
         elementLevelMax: 9
       },
-      configure: {}
+      configure: {},
+      baseUrl : process.env.VUE_APP_JSON_BASE_URL
     };
   },
   async mounted() {
@@ -144,6 +148,7 @@ export default {
     const spellResponse = await this.$axios.get(endPoint);
     this.rawData = spellResponse.data;
 
+    // リレーション用のJSONを引っ張ってくる
     const nationSpellWorkResponse = await this.$axios.get(
       `${process.env.VUE_APP_JSON_BASE_URL}/NationalSpellWork.json`
     );
@@ -153,6 +158,7 @@ export default {
       `${process.env.VUE_APP_JSON_BASE_URL}/NationalSpell.json`
     );
 
+    // 関係のある国家情報を配列として入れていく
     Object.keys(nationSpellResponse.data).forEach(spell => {
       nationSpellResponse.data[spell]["nations"] = this.nationSpellRelation[
         nationSpellResponse.data[spell].Pname
@@ -255,4 +261,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+</style>
