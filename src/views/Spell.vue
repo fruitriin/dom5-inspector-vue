@@ -68,14 +68,19 @@
           <td rowspan="2">
             {{ row.Name }}
             <a :href="`/?Spell/${row.School}/${row.Pname}`">
-            <img class="arrowLink" :src="`${baseUrl}/level-up-alt-solid.svg`" width="12" height="12">
-          </a>
+              <img
+                class="arrowLink"
+                :src="`${baseUrl}/level-up-alt-solid.svg`"
+                width="12"
+                height="12"
+              />
+            </a>
           </td>
           <td>{{ row.School }} Lv{{ row.Lv }}</td>
           <td v-html="elementToImg(row.Main)"></td>
           <td v-html="elementToImg(row.Sub)"></td>
           <td>{{ row.Cost }}</td>
-          <td>{{row.Use}}/{{ row.Terrain }}</td>
+          <td>{{ row.Use }}/{{ row.Terrain }}</td>
           <td>{{ row.Type }}</td>
           <td v-if="row.nations" v-html="row.nations.join('<br>')"></td>
           <td v-else></td>
@@ -140,7 +145,7 @@ export default {
         elementLevelMax: 9
       },
       configure: {},
-      baseUrl : process.env.VUE_APP_JSON_BASE_URL
+      baseUrl: process.env.VUE_APP_JSON_BASE_URL
     };
   },
   async mounted() {
@@ -165,7 +170,7 @@ export default {
       ];
     });
 
-    this.rawData = Object.assign(this.rawData, nationSpellResponse.data);
+    this.rawData = Object.assign({}, this.rawData, nationSpellResponse.data);
   },
   computed: {
     nationSpellRelation() {
@@ -261,5 +266,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>
