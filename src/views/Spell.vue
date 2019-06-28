@@ -191,7 +191,7 @@ export default {
           );
           if (filterdElements.length > 0) {
             let subElement = "";
-            if (d.Sub === null) {
+            if (d.Sub === "") {
               subElement = mainElement;
             } else {
               subElement = d.Sub.substr(0, 1);
