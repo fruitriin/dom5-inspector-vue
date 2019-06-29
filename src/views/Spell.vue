@@ -14,20 +14,18 @@
               <input
                 :id="'filter_' + element"
                 type="checkbox"
-                v-model="filters.elements"
+                v-model.lazy="filters.elements"
                 :value="element"
               />
-              <label :for="'filter_' + element">{{ element }}</label>
+              <label :for="'filter_' + element">{{ element }}　</label>
             </template>
           </td>
         </tr>
         <tr>
           <td>系統レベル</td>
           <td>
-            <input type="number" v-model="filters.elementLevelMin" /> 〜<input
-              type="number"
-              v-model="filters.elementLevelMax"
-            />
+            <input type="number" v-model.lazy="filters.elementLevelMin" /> 〜
+            <input type="number" v-model.lazy="filters.elementLevelMax" />
           </td>
         </tr>
         <tr>
@@ -38,10 +36,10 @@
                 <input
                   :id="'filter_' + school"
                   type="checkbox"
-                  v-model="filters.schools"
+                  v-model.lazy="filters.schools"
                   :value="school"
                 />
-                <label :for="'filter_' + school">{{ school }}</label>
+                <label :for="'filter_' + school">{{ school }}　</label>
                 <br v-if="k === 3" />
               </template>
             </template>
@@ -50,10 +48,8 @@
         <tr>
           <td>領域レベル</td>
           <td>
-            <input type="number" v-model="filters.schoolsLevelMin" /> 〜<input
-              type="number"
-              v-model="filters.schoolsLevelMax"
-            />
+            <input type="number" v-model.lazy="filters.schoolsLevelMin" />
+            〜<input type="number" v-model.lazy="filters.schoolsLevelMax" />
           </td>
         </tr>
       </table>
@@ -185,9 +181,12 @@ export default {
 
     data() {
       if (this.rawData.length === 0) return {};
+
+
       return Object.values(this.rawData).filter(d => {
         if (this.filters.name !== "") {
-          if (d.Name.indexOf(this.filters.name) === -1) {
+          const nameFilter = new RegExp(`${this.filters.name}`, "i");
+          if (!nameFilter.test(d.Name)) {
             return false;
           }
         }
